@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f1f5f9;
+  --foreground: #0f172a;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Force light mode — this is a civic pitch prototype with a fixed palette */
+body {
+  background: #f1f5f9;
+  color: #0f172a;
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+/* Smooth focus rings */
+:focus-visible {
+  outline: 2px solid #2b6cb0;
+  outline-offset: 2px;
+}
+
+/* Sensible box-sizing baseline */
+*, *::before, *::after {
+  box-sizing: border-box;
+}

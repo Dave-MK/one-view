@@ -42,6 +42,7 @@ function SidebarContent({ nav, sectionLabel, onNavigate }: { nav: NavItem[]; sec
           <span className="font-bold text-lg" style={{ color: 'var(--brand-800)' }}>{PRODUCT_NAME}</span>
         </Link>
       </div>
+      <Switchers onAfterChange={onNavigate} />
       <nav className="flex-1 overflow-y-auto py-4 px-3 scroll-thin" aria-label={sectionLabel}>
         <p className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider" style={{ color: 'var(--text-faint)' }}>
           {sectionLabel}
@@ -117,7 +118,7 @@ function MobileSidebar({ nav, sectionLabel, open, onClose }: { nav: NavItem[]; s
 // ---------------------------------------------------------------------------
 // Persona + Case switchers (the demo control)
 // ---------------------------------------------------------------------------
-function Switchers() {
+function Switchers({ onAfterChange }: { onAfterChange?: () => void }) {
   const { state, dispatch, activeParticipant } = useApp()
   const router = useRouter()
 
@@ -140,60 +141,60 @@ function Switchers() {
       }
     }
     router.push(homeRouteFor(id))
+    onAfterChange?.()
   }
 
+  const selectClass = 'w-full appearance-none text-xs font-medium rounded-lg border pl-3 pr-7 py-2 cursor-pointer truncate'
+
   return (
-    <div className="flex items-center gap-2">
+    <div className="px-3 py-3 border-b flex flex-col gap-2.5" style={{ borderColor: 'var(--border)' }}>
+      {/* Persona switcher */}
+      <label className="block">
+        <span className="block text-[11px] font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--text-faint)' }}>Viewing as</span>
+        <span className="relative block">
+          <select
+            value={activeParticipant.id}
+            onChange={handlePersona}
+            className={selectClass}
+            style={{ borderColor: 'var(--border-2)', color: 'var(--brand-700)', backgroundColor: '#fff' }}
+          >
+            <optgroup label="Service-user side">
+              {participants.filter((p) => p.side === 'service_user').map((p) => (
+                <option key={p.id} value={p.id}>{p.name} · {p.baseRole}</option>
+              ))}
+            </optgroup>
+            <optgroup label="Service-provider side">
+              {participants.filter((p) => p.side === 'service_provider').map((p) => (
+                <option key={p.id} value={p.id}>
+                  {p.name} · {p.baseRole}{p.organisationId ? ` (${organisationMap[p.organisationId]?.shortName})` : ''}
+                </option>
+              ))}
+            </optgroup>
+          </select>
+          <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-faint)' }}><Icon name="chevronDown" size={12} /></span>
+        </span>
+      </label>
+
       {/* Case (service user) switcher */}
       {availableServiceUsers.length > 0 && (
-        <label className="relative hidden sm:block">
-          <span className="sr-only">Active case</span>
-          <select
-            value={state.activeServiceUserId}
-            onChange={(e) => dispatch({ type: 'SET_SERVICE_USER', payload: e.target.value })}
-            className="appearance-none text-xs font-medium rounded-lg border pl-3 pr-7 py-1.5 cursor-pointer"
-            style={{ borderColor: 'var(--border-2)', color: 'var(--text)', backgroundColor: '#fff' }}
-            title="Switch case (demonstrates the same layer across domains)"
-          >
-            {availableServiceUsers.map((su) => (
-              <option key={su.id} value={su.id}>
-                Case: {su.name}
-              </option>
-            ))}
-          </select>
-          <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-faint)' }}>
-            <Icon name="chevronDown" size={12} />
+        <label className="block">
+          <span className="block text-[11px] font-semibold uppercase tracking-wider mb-1" style={{ color: 'var(--text-faint)' }}>Active case</span>
+          <span className="relative block">
+            <select
+              value={state.activeServiceUserId}
+              onChange={(e) => { dispatch({ type: 'SET_SERVICE_USER', payload: e.target.value }); onAfterChange?.() }}
+              className={selectClass}
+              style={{ borderColor: 'var(--border-2)', color: 'var(--text)', backgroundColor: '#fff' }}
+              title="Switch case (demonstrates the same layer across domains)"
+            >
+              {availableServiceUsers.map((su) => (
+                <option key={su.id} value={su.id}>{su.name}</option>
+              ))}
+            </select>
+            <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-faint)' }}><Icon name="chevronDown" size={12} /></span>
           </span>
         </label>
       )}
-
-      {/* Persona switcher */}
-      <label className="relative">
-        <span className="sr-only">View as participant</span>
-        <select
-          value={activeParticipant.id}
-          onChange={handlePersona}
-          className="appearance-none text-xs font-medium rounded-lg border pl-3 pr-7 py-1.5 cursor-pointer max-w-[42vw] sm:max-w-[260px] truncate"
-          style={{ borderColor: 'var(--border-2)', color: 'var(--brand-700)', backgroundColor: '#fff' }}
-          title="View as a different participant"
-        >
-          <optgroup label="Service-user side">
-            {participants.filter((p) => p.side === 'service_user').map((p) => (
-              <option key={p.id} value={p.id}>{p.name} · {p.baseRole}</option>
-            ))}
-          </optgroup>
-          <optgroup label="Service-provider side">
-            {participants.filter((p) => p.side === 'service_provider').map((p) => (
-              <option key={p.id} value={p.id}>
-                {p.name} · {p.baseRole}{p.organisationId ? ` (${organisationMap[p.organisationId]?.shortName})` : ''}
-              </option>
-            ))}
-          </optgroup>
-        </select>
-        <span className="pointer-events-none absolute right-2 top-1/2 -translate-y-1/2" style={{ color: 'var(--text-faint)' }}>
-          <Icon name="chevronDown" size={12} />
-        </span>
-      </label>
     </div>
   )
 }
@@ -215,10 +216,9 @@ function Topbar({ title, onMenu }: { title: string; onMenu: () => void }) {
           <Icon name="menu" size={22} />
         </button>
         <Link href={home} className="lg:hidden flex-shrink-0" aria-label={`${PRODUCT_NAME} home`}><LogoMark size={20} /></Link>
-        <h1 className="hidden sm:block text-base sm:text-lg font-semibold truncate" style={{ color: 'var(--brand-800)' }}>{title}</h1>
+        <h1 className="text-base sm:text-lg font-semibold truncate" style={{ color: 'var(--brand-800)' }}>{title}</h1>
       </div>
       <div className="flex items-center gap-3">
-        <Switchers />
         <button type="button" className="relative p-2 rounded-full" style={{ color: 'var(--text-muted)' }} aria-label={`Notifications${unreadCount ? `, ${unreadCount} unread` : ''}`}>
           <Icon name="bell" size={20} />
           {unreadCount > 0 && (

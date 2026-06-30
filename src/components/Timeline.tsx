@@ -20,7 +20,7 @@ const TABS: { key: FilterTab; label: string; color: string }[] = [
   { key: 'admin', label: 'Admin', color: CATEGORY_META.admin.color },
 ]
 
-export function Timeline() {
+export function Timeline({ linkable = true }: { linkable?: boolean }) {
   const { visibleEvents, activeServiceUser } = useApp()
   const [activeFilter, setActiveFilter] = useState<FilterTab>('all')
 
@@ -110,7 +110,7 @@ export function Timeline() {
             <AnimatePresence initial={false}>
               {filtered.map((event) => (
                 <motion.li key={event.id} layout>
-                  <EventCard event={event} isNew={newEventIds.has(event.id)} />
+                  <EventCard event={event} isNew={newEventIds.has(event.id)} linkable={linkable} />
                 </motion.li>
               ))}
             </AnimatePresence>

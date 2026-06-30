@@ -7,7 +7,7 @@ import { serviceUsers } from '@/data/seed'
 import { Card, Avatar, Badge, EmptyState } from '@/components/ui/primitives'
 
 export default function CaseloadPage() {
-  const { state, activeParticipant, dispatch } = useApp()
+  const { state, activeParticipant } = useApp()
   const caseload = serviceUsers
     .map((su) => ({ su, rel: relationshipFor(state.relationships, activeParticipant.id, su.id) }))
     .filter((x) => x.rel)
@@ -35,12 +35,11 @@ export default function CaseloadPage() {
                   <p className="text-xs mt-0.5" style={{ color: 'var(--text-faint)' }}>Your role: {rel!.relationshipType} · {visibleEvents} events visible to you</p>
                 </div>
                 <Link
-                  href="/provider/tasks"
-                  onClick={() => dispatch({ type: 'SET_SERVICE_USER', payload: su.id })}
+                  href={`/provider/caseload/${su.id}`}
                   className="text-sm font-medium px-3 py-1.5 rounded-lg border flex-shrink-0"
                   style={{ borderColor: 'var(--border-2)', color: 'var(--brand-700)' }}
                 >
-                  Open
+                  Open record
                 </Link>
               </Card>
             )

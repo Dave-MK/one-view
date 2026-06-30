@@ -8,7 +8,7 @@ import { TASK_STATUS_META, PRIORITY_META } from '@/lib/status'
 import { formatDate } from '@/lib/format'
 import { Card, StatCard, SectionHeader, Badge, EmptyState } from '@/components/ui/primitives'
 import { Donut } from '@/components/ui/charts'
-import { Icon } from '@/components/ui/Icon'
+import { CreateTaskButton } from '@/components/CreateTaskButton'
 import type { TaskStatus } from '@/types'
 
 const DEMO_NOW = new Date('2026-06-26T12:00:00.000Z').getTime()
@@ -60,9 +60,7 @@ export default function ProviderDashboard() {
           <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>Dashboard</h2>
           <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Overview of your work and caseload — {activeParticipant.name}, {activeParticipant.baseRole}.</p>
         </div>
-        <button className="inline-flex items-center gap-1.5 rounded-lg px-3.5 py-2 text-white text-sm font-semibold" style={{ backgroundColor: 'var(--brand-800)' }}>
-          <Icon name="check" size={15} /> Create
-        </button>
+        <CreateTaskButton />
       </div>
 
       {/* Stat cards */}

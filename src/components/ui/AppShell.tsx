@@ -192,12 +192,12 @@ function Topbar({ title }: { title: string }) {
       </div>
       <div className="flex items-center gap-3">
         <Switchers />
-        <Link href="/dashboard/help" className="relative p-2 rounded-full" style={{ color: 'var(--text-muted)' }} aria-label={`Notifications${unreadCount ? `, ${unreadCount} unread` : ''}`}>
+        <button type="button" className="relative p-2 rounded-full" style={{ color: 'var(--text-muted)' }} aria-label={`Notifications${unreadCount ? `, ${unreadCount} unread` : ''}`}>
           <Icon name="bell" size={20} />
           {unreadCount > 0 && (
             <span className="absolute top-1 right-1 w-2 h-2 rounded-full" style={{ backgroundColor: '#3f9c54' }} aria-hidden="true" />
           )}
-        </Link>
+        </button>
         <Avatar name={activeParticipant.name} color={activeParticipant.avatarColor} size={34} />
       </div>
     </header>

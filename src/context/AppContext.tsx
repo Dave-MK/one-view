@@ -95,13 +95,20 @@ export type AppAction =
   | { type: 'SET_PARTICIPANT'; payload: string }
   | { type: 'SET_SERVICE_USER'; payload: string }
   | { type: 'ADD_EVENT'; payload: TimelineEvent }
+  | { type: 'ADD_TASK'; payload: Task }
   | { type: 'COMPLETE_TASK'; payload: string }
+  | { type: 'ADD_MESSAGE'; payload: { threadId: string; fromParticipantId: string; body: string } }
   | { type: 'UPDATE_RELATIONSHIP'; payload: { id: string; allowedCategories: Category[] } }
   | { type: 'MARK_NOTIFICATION_READ'; payload: string }
   | { type: 'LOG_ACCESS'; payload: AccessLogEntry }
   | { type: 'RESET_DEMO' }
 
 let logCounter = 0
+let seqCounter = 0
+export function nextSeq(): number {
+  seqCounter += 1
+  return seqCounter
+}
 
 function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
@@ -128,11 +135,35 @@ function appReducer(state: AppState, action: AppAction): AppState {
         ],
       }
 
+    case 'ADD_TASK':
+      return { ...state, tasks: [action.payload, ...state.tasks] }
+
     case 'COMPLETE_TASK':
       return {
         ...state,
         tasks: state.tasks.map((t) =>
           t.id === action.payload ? { ...t, status: 'closed' } : t,
+        ),
+      }
+
+    case 'ADD_MESSAGE':
+      return {
+        ...state,
+        threads: state.threads.map((t) =>
+          t.id === action.payload.threadId
+            ? {
+                ...t,
+                messages: [
+                  ...t.messages,
+                  {
+                    id: `msg-live-${nextSeq()}`,
+                    fromParticipantId: action.payload.fromParticipantId,
+                    body: action.payload.body,
+                    timestamp: new Date().toISOString(),
+                  },
+                ],
+              }
+            : t,
         ),
       }
 

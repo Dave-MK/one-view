@@ -13,12 +13,37 @@ interface EventCardProps {
   event: TimelineEvent
   isNew?: boolean
   href?: string
+  /** When false, the card renders as static (no navigation) — e.g. when the
+   *  surrounding page is already the record context. */
+  linkable?: boolean
 }
 
-export function EventCard({ event, isNew = false, href }: EventCardProps) {
+export function EventCard({ event, isNew = false, href, linkable = true }: EventCardProps) {
   const cat = CATEGORY_META[event.category]
   const hasDetail = !!event.payload
   const link = href ?? `/dashboard/journey/${event.id}`
+
+  const inner = (
+    <div className="flex items-start justify-between gap-3">
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center flex-wrap gap-2 mb-1.5">
+          <Badge tone="neutral" className="!bg-transparent !px-0">
+            <span style={{ color: cat.color, fontWeight: 600 }}>{cat.label}</span>
+          </Badge>
+          <OrgPill organisationId={event.sourceOrganisationId} />
+        </div>
+        <p className="font-semibold text-sm leading-snug" style={{ color: '#0f172a' }}>{event.title}</p>
+        <p className="text-xs mt-1" style={{ color: 'var(--text-faint)' }}>
+          {relativeTime(event.timestamp)} · {formatDateTime(event.timestamp)}
+        </p>
+      </div>
+      {hasDetail && linkable && (
+        <span className="flex-shrink-0 mt-0.5" style={{ color: 'var(--text-faint)' }} aria-hidden="true">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6" /></svg>
+        </span>
+      )}
+    </div>
+  )
 
   return (
     <motion.div
@@ -44,27 +69,13 @@ export function EventCard({ event, isNew = false, href }: EventCardProps) {
         </motion.span>
       )}
       <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl" style={{ backgroundColor: cat.color }} aria-hidden="true" />
-      <Link href={link} className="block w-full pl-5 pr-4 py-4 rounded-xl" aria-label={`View details for: ${event.title}`}>
-        <div className="flex items-start justify-between gap-3">
-          <div className="flex-1 min-w-0">
-            <div className="flex items-center flex-wrap gap-2 mb-1.5">
-              <Badge tone="neutral" className="!bg-transparent !px-0">
-                <span style={{ color: cat.color, fontWeight: 600 }}>{cat.label}</span>
-              </Badge>
-              <OrgPill organisationId={event.sourceOrganisationId} />
-            </div>
-            <p className="font-semibold text-sm leading-snug" style={{ color: '#0f172a' }}>{event.title}</p>
-            <p className="text-xs mt-1" style={{ color: 'var(--text-faint)' }}>
-              {relativeTime(event.timestamp)} · {formatDateTime(event.timestamp)}
-            </p>
-          </div>
-          {hasDetail && (
-            <span className="flex-shrink-0 mt-0.5" style={{ color: 'var(--text-faint)' }} aria-hidden="true">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><polyline points="9 18 15 12 9 6" /></svg>
-            </span>
-          )}
-        </div>
-      </Link>
+      {linkable ? (
+        <Link href={link} className="block w-full pl-5 pr-4 py-4 rounded-xl" aria-label={`View details for: ${event.title}`}>
+          {inner}
+        </Link>
+      ) : (
+        <div className="block w-full pl-5 pr-4 py-4 rounded-xl">{inner}</div>
+      )}
     </motion.div>
   )
 }

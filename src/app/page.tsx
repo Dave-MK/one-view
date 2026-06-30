@@ -50,7 +50,7 @@ export default function LandingPage() {
 
       {/* Hero */}
       <section className="relative overflow-hidden" style={{ backgroundColor: 'var(--surface-2)' }}>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 grid lg:grid-cols-2 gap-10 items-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
           <div>
             <span className="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1 rounded-full mb-5" style={{ backgroundColor: '#eff4ff', color: 'var(--brand-700)' }}>
               <LogoMark size={14} /> A coordination layer, not another portal
@@ -108,7 +108,7 @@ export default function LandingPage() {
       </section>
 
       {/* Feature strip */}
-      <section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <section id="how-it-works" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
         {FEATURES.map((f) => (
           <div key={f.title} className="rounded-xl border p-5 bg-white" style={{ borderColor: 'var(--border)' }}>
             <div className="w-9 h-9 rounded-lg flex items-center justify-center mb-3" style={{ backgroundColor: '#eff4ff', color: 'var(--brand-700)' }}><LogoMark size={18} /></div>
@@ -135,7 +135,7 @@ export default function LandingPage() {
             The person being supported (and those acting for them) on one side; the organisations supporting them on the other. They meet on a single coordination layer.
           </p>
         </div>
-        <div className="grid lg:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
           <SideCard title="Service-user side" subtitle="The person, and those acting for them" items={SERVICE_USER_SIDE} color="#7c3aed" />
           <SideCard title="Service-provider side" subtitle="The organisations providing support" items={PROVIDER_SIDE} color="#2563eb" />
         </div>
@@ -161,7 +161,7 @@ export default function LandingPage() {
               SEND is simply the first worked example. The same coordination layer reconfigures for any context where multiple agencies and a person need a shared, governed picture.
             </p>
           </div>
-          <div className="grid md:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
             {DOMAINS.map((d) => (
               <div key={d.title} className="rounded-xl border p-5 bg-white" style={{ borderColor: 'var(--border)' }}>
                 <div className="flex items-center justify-between mb-2">
@@ -184,7 +184,7 @@ export default function LandingPage() {
             Designed so that information governance leads, Caldicott Guardians and DPOs recognise it as safe by design.
           </p>
         </div>
-        <div className="grid sm:grid-cols-2 gap-5">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           {GOVERNANCE.map((g) => (
             <div key={g.title} className="rounded-xl border p-5 bg-white flex gap-3" style={{ borderColor: 'var(--border)' }}>
               <Check />

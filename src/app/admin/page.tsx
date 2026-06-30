@@ -55,7 +55,7 @@ export default function AdminOverview() {
         <StatCard label="Elevated access" value={elevatedReviews} sub="Periodic review" tone={elevatedReviews > 0 ? 'warn' : 'neutral'} />
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         <Card>
           <SectionHeader title="Access by purpose" />
           <Donut data={purposeData} centerLabel="accesses" />

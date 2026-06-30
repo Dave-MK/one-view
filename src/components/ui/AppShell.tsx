@@ -173,7 +173,7 @@ function Switchers() {
         <select
           value={activeParticipant.id}
           onChange={handlePersona}
-          className="appearance-none text-xs font-medium rounded-lg border pl-3 pr-7 py-1.5 cursor-pointer"
+          className="appearance-none text-xs font-medium rounded-lg border pl-3 pr-7 py-1.5 cursor-pointer max-w-[42vw] sm:max-w-[260px] truncate"
           style={{ borderColor: 'var(--border-2)', color: 'var(--brand-700)', backgroundColor: '#fff' }}
           title="View as a different participant"
         >
@@ -215,7 +215,7 @@ function Topbar({ title, onMenu }: { title: string; onMenu: () => void }) {
           <Icon name="menu" size={22} />
         </button>
         <Link href={home} className="lg:hidden flex-shrink-0" aria-label={`${PRODUCT_NAME} home`}><LogoMark size={20} /></Link>
-        <h1 className="text-base sm:text-lg font-semibold truncate" style={{ color: 'var(--brand-800)' }}>{title}</h1>
+        <h1 className="hidden sm:block text-base sm:text-lg font-semibold truncate" style={{ color: 'var(--brand-800)' }}>{title}</h1>
       </div>
       <div className="flex items-center gap-3">
         <Switchers />

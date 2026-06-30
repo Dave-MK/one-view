@@ -72,7 +72,7 @@ export default function ProviderDashboard() {
         <StatCard label="Updates" value={updates} sub="This week" />
       </div>
 
-      <div className="grid lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Tasks table */}
         <Card className="lg:col-span-2" padded={false}>
           <div className="px-5 pt-5">

@@ -25,7 +25,7 @@ export default function DataAccessPage() {
         <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>Data access</h2>
         <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Where access is concentrated. For the full chronological record, see the <Link href="/admin/audit" className="font-medium" style={{ color: 'var(--brand-700)' }}>audit log</Link>.</p>
       </div>
-      <div className="grid sm:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
         <Card><SectionHeader title="Access by subject" /><BarList data={Object.entries(bySubject).map(([label, value]) => ({ label, value }))} color="#7c3aed" /></Card>
         <Card><SectionHeader title="Access by action" /><BarList data={Object.entries(byAction).map(([label, value]) => ({ label, value }))} color="#2563eb" /></Card>
       </div>

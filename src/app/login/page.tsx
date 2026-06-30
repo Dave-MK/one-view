@@ -40,7 +40,7 @@ function LoginInner() {
     <div className="min-h-screen flex flex-col" style={{ backgroundColor: 'var(--surface-2)' }}>
       <PublicNav />
       <main className="flex-1 flex items-center justify-center px-4 py-12">
-        <div className="w-full max-w-4xl grid md:grid-cols-[1fr_360px] gap-6 items-stretch">
+        <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-[1fr_360px] gap-6 items-stretch">
           {/* Auth card */}
           <div className="rounded-2xl border bg-white p-7" style={{ borderColor: 'var(--border)' }}>
             <div className="flex items-center gap-2 mb-6">

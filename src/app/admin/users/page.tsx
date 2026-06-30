@@ -12,6 +12,7 @@ export default function UsersPage() {
         <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Everyone with an account on the platform, across both worlds.</p>
       </div>
       <Card padded={false}>
+        <div className="overflow-x-auto">
         <table className="w-full text-sm">
           <thead>
             <tr className="text-left" style={{ color: 'var(--text-faint)' }}>
@@ -37,6 +38,7 @@ export default function UsersPage() {
             ))}
           </tbody>
         </table>
+        </div>
       </Card>
     </div>
   )

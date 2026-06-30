@@ -17,7 +17,7 @@ export default function HelpPage() {
         <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>Notifications & help</h2>
         <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Recent activity and answers to common questions.</p>
       </div>
-      <div className="grid lg:grid-cols-2 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
         <Card><NotificationsList /></Card>
         <Card>
           <h3 className="text-sm font-semibold mb-3" style={{ color: 'var(--brand-800)' }}>Frequently asked</h3>

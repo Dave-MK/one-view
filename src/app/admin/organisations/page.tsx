@@ -16,7 +16,7 @@ export default function OrganisationsPage() {
         <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>Organisations</h2>
         <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Connected organisations across health, care, education, housing, policing and the voluntary sector.</p>
       </div>
-      <div className="grid sm:grid-cols-2 gap-3">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
         {organisations.map((o) => {
           const count = participants.filter((p) => p.organisationId === o.id).length
           return (

@@ -23,7 +23,7 @@ export function AppointmentDetail({ title, payload, sourceOrganisationId }: Prop
         )}
         <h1 className="text-2xl font-bold mb-1 leading-snug font-display" style={{ color: 'var(--brand-800)' }}>{title}</h1>
 
-        <div className="mt-4 grid gap-3">
+        <div className="mt-4 grid grid-cols-1 gap-3">
           <Row icon="cal" bg="#eff6ff" stroke="#2563eb" label="Date & Time">
             <p className="text-sm font-medium" style={{ color: '#0f172a' }}>{formatLongDate(payload.date)}</p>
             <p className="text-sm" style={{ color: '#334155' }}>{payload.time}</p>

@@ -29,7 +29,7 @@ export default function ProviderPeoplePage() {
                   <p className="text-sm font-semibold" style={{ color: 'var(--brand-800)' }}>{su.name}</p>
                   <Badge tone="neutral">{team.length} people</Badge>
                 </div>
-                <div className="grid sm:grid-cols-2 gap-3">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {team.map(({ rel, p }) => (
                     <div key={rel.id} className="flex items-center gap-2.5">
                       <Avatar name={p.name} color={p.avatarColor} size={34} />

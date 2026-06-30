@@ -48,7 +48,7 @@ export default function ServiceUserHome() {
         </div>
       </Card>
 
-      <div className="grid lg:grid-cols-3 gap-5">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Left two columns */}
         <div className="lg:col-span-2 flex flex-col gap-5">
           <Card>

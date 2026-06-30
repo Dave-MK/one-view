@@ -17,7 +17,7 @@ export default function ProviderResourcesPage() {
         <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>Resources</h2>
         <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Guidance and reference material for working in OneView.</p>
       </div>
-      <div className="grid sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {RESOURCES.map((r) => (
           <Card key={r.title} className="flex gap-3">
             <span className="flex-shrink-0 w-9 h-9 rounded-lg flex items-center justify-center" style={{ backgroundColor: '#eff6ff', color: 'var(--brand-700)' }}>

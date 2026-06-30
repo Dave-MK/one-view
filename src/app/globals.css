@@ -1,32 +1,86 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f1f5f9;
-  --foreground: #0f172a;
+  /* Brand */
+  --brand-900: #0f2748;
+  --brand-800: #16335a;
+  --brand-700: #1e4178;
+  --brand-600: #2563eb;
+  --brand-500: #3b82f6;
+  --accent: #2563eb;
+
+  /* Surfaces */
+  --bg: #f1f5f9;
+  --surface: #ffffff;
+  --surface-2: #f8fafc;
+  --border: #e5e7eb;
+  --border-2: #e2e8f0;
+
+  /* Text */
+  --text: #0f172a;
+  --text-muted: #64748b;
+  --text-faint: #94a3b8;
+
+  /* Status */
+  --ok: #16a34a;
+  --ok-bg: #dcfce7;
+  --warn: #b45309;
+  --warn-bg: #fef9c3;
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  --info: #2563eb;
+  --info-bg: #eff6ff;
+
+  /* Category accents */
+  --cat-education: #2563eb;
+  --cat-health: #16a34a;
+  --cat-social_care: #9333ea;
+  --cat-safeguarding: #dc2626;
+  --cat-housing: #ea580c;
+  --cat-admin: #64748b;
+
+  --radius: 0.75rem;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--bg);
+  --color-foreground: var(--text);
+  /* System font stacks — no external (Google Fonts) fetch, so the app builds
+     and runs in any environment, online or offline. */
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto,
+    Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji", sans-serif;
+  --font-serif: Georgia, "Times New Roman", serif;
+  --font-mono: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas,
+    "Liberation Mono", monospace;
 }
 
 /* Force light mode — this is a civic pitch prototype with a fixed palette */
 body {
-  background: #f1f5f9;
-  color: #0f172a;
-  font-size: 16px;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 15px;
   line-height: 1.6;
 }
 
 /* Smooth focus rings */
 :focus-visible {
-  outline: 2px solid #2b6cb0;
+  outline: 2px solid var(--accent);
   outline-offset: 2px;
 }
 
 /* Sensible box-sizing baseline */
 *, *::before, *::after {
   box-sizing: border-box;
+}
+
+/* Serif display helper for headings */
+.font-display {
+  font-family: var(--font-serif);
+}
+
+/* Thin scrollbars inside panels */
+.scroll-thin {
+  scrollbar-width: thin;
+  scrollbar-color: #cbd5e1 transparent;
 }

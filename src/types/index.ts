@@ -24,6 +24,9 @@ export interface Organisation {
   name: string
   shortName: string
   type: OrgType
+  /** The system this organisation actually works in (where messages route to /
+   *  replies originate from), e.g. "Rio", "Liquidlogic", "School MIS". */
+  system?: string
 }
 
 // Worked examples ("domains") the same layer can serve.
@@ -116,6 +119,7 @@ export type EventType =
   | 'placement_confirmed'
   | 'plan_updated'
   | 'safeguarding_note'
+  | 'meeting_summary'
   | 'status_update'
 
 export interface AppointmentPayload {
@@ -147,6 +151,8 @@ export interface TimelineEvent {
   category: Category
   sensitivity: Sensitivity
   payload?: AppointmentPayload | DocumentMetaPayload
+  /** Short free-text body (e.g. an AI-generated meeting summary). */
+  note?: string
 }
 
 export type TaskStatus =
@@ -238,6 +244,33 @@ export interface AccessLogEntry {
   lawfulBasis: LawfulBasis
   detail: string
   timestamp: string
+}
+
+// ---------------------------------------------------------------------------
+// Meetings — hosted in OneView; AI turns the recording into a summary + actions
+// ---------------------------------------------------------------------------
+export interface MeetingAction {
+  title: string
+  assigneeParticipantId: string
+  category: Category
+  priority: TaskPriority
+}
+
+export interface MeetingScript {
+  agenda: string[]
+  captions: string[]
+  summary: string
+  decisions: string[]
+  actions: MeetingAction[]
+}
+
+export interface MeetingOutcome {
+  appointmentId: string
+  serviceUserId: string
+  summary: string
+  decisions: string[]
+  actionTitles: string[]
+  completedAt: string
 }
 
 // ---------------------------------------------------------------------------

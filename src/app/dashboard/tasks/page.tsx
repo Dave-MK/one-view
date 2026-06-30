@@ -19,8 +19,8 @@ export default function TasksPage() {
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6">
       <div className="mb-5">
-        <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>Tasks</h2>
-        <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Open actions across {activeServiceUser.name}’s support, within the categories you can see.</p>
+        <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>Actions</h2>
+        <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Coordination actions across {activeServiceUser.name}’s support — who is doing what, within the categories you can see. The records these produce stay in each service’s own system.</p>
       </div>
       <Card padded={false}>
         {tasks.length === 0 ? <EmptyState title="No tasks visible" /> : (

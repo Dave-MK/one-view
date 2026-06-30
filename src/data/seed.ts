@@ -32,17 +32,17 @@ function daysAhead(days: number): string {
 // Organisations
 // ---------------------------------------------------------------------------
 export const organisations: Organisation[] = [
-  { id: 'la_sthelens', name: 'St Helens Council', shortName: 'St Helens Council', type: 'LocalAuthority' },
-  { id: 'nhs_merseycare', name: 'Mersey Care NHS Foundation Trust', shortName: 'Mersey Care', type: 'NHS' },
-  { id: 'school_send', name: 'Greenbank SEND School', shortName: 'Greenbank School', type: 'School' },
-  { id: 'nhs_alderhey', name: "Alder Hey Children's NHS Foundation Trust", shortName: 'Alder Hey', type: 'NHS' },
-  { id: 'scr_graphnet', name: 'Shared Care Record (Graphnet / CIPHA)', shortName: 'Graphnet / CIPHA', type: 'NHS' },
+  { id: 'la_sthelens', name: 'St Helens Council', shortName: 'St Helens Council', type: 'LocalAuthority', system: 'Liquidlogic' },
+  { id: 'nhs_merseycare', name: 'Mersey Care NHS Foundation Trust', shortName: 'Mersey Care', type: 'NHS', system: 'Rio' },
+  { id: 'school_send', name: 'Greenbank SEND School', shortName: 'Greenbank School', type: 'School', system: 'School MIS' },
+  { id: 'nhs_alderhey', name: "Alder Hey Children's NHS Foundation Trust", shortName: 'Alder Hey', type: 'NHS', system: 'Alder Hey PAS' },
+  { id: 'scr_graphnet', name: 'Shared Care Record (Graphnet / CIPHA)', shortName: 'Graphnet / CIPHA', type: 'NHS', system: 'Graphnet / CIPHA' },
   // Domain 2 — adult social care / hospital discharge
-  { id: 'nhs_acute', name: 'Whiston Hospital (Mersey & West Lancs)', shortName: 'Whiston Hospital', type: 'NHS' },
-  { id: 'nhs_community', name: 'Community Health & District Nursing', shortName: 'Community Health', type: 'NHS' },
-  { id: 'housing_helena', name: 'Torus Housing', shortName: 'Torus Housing', type: 'Housing' },
-  { id: 'vcse_ageuk', name: 'Age UK Mid Mersey', shortName: 'Age UK', type: 'VCSE' },
-  { id: 'police_merseyside', name: 'Merseyside Police', shortName: 'Merseyside Police', type: 'Police' },
+  { id: 'nhs_acute', name: 'Whiston Hospital (Mersey & West Lancs)', shortName: 'Whiston Hospital', type: 'NHS', system: 'Careflow' },
+  { id: 'nhs_community', name: 'Community Health & District Nursing', shortName: 'Community Health', type: 'NHS', system: 'SystmOne' },
+  { id: 'housing_helena', name: 'Torus Housing', shortName: 'Torus Housing', type: 'Housing', system: 'Torus Portal' },
+  { id: 'vcse_ageuk', name: 'Age UK Mid Mersey', shortName: 'Age UK', type: 'VCSE', system: 'Charitylog' },
+  { id: 'police_merseyside', name: 'Merseyside Police', shortName: 'Merseyside Police', type: 'Police', system: 'Niche RMS' },
 ]
 
 export const organisationMap: Record<string, Organisation> = Object.fromEntries(
@@ -380,6 +380,90 @@ export const seedAppointments: Appointment[] = [
 ]
 
 // ---------------------------------------------------------------------------
+// Meeting scripts — what the in-app meeting "records", and what the AI produces
+// as a summary + extracted coordination actions, keyed by appointment id.
+// ---------------------------------------------------------------------------
+export const meetingScripts: Record<string, import('@/types').MeetingScript> = {
+  'apt-a1': {
+    agenda: ['Review since last session', 'Sleep & anxiety', 'Next steps'],
+    captions: [
+      'Dr Hassan: Thanks for joining, Priya. How has Aanya been since we last met?',
+      'Priya: Better in the mornings, but bedtimes are still hard.',
+      'Dr Hassan: Let’s adjust the wind-down routine and review in four weeks.',
+    ],
+    summary:
+      'CAMHS review of Aanya Sharma. Morning routines have improved; bedtime anxiety persists. Agreed to adjust the wind-down routine, share a sleep-hygiene plan with school, and review progress in four weeks. No safeguarding concerns raised.',
+    decisions: ['Adjust wind-down routine', 'Review in 4 weeks'],
+    actions: [
+      { title: 'Share sleep-hygiene plan with school', assigneeParticipantId: 'yasmin', category: 'health', priority: 'medium' },
+      { title: 'Book 4-week CAMHS review', assigneeParticipantId: 'yasmin', category: 'health', priority: 'medium' },
+    ],
+  },
+  'apt-a2': {
+    agenda: ['EHCP progress', 'Provision & outcomes', 'Annual review actions'],
+    captions: [
+      'Sean: Welcome everyone — this is Aanya’s annual EHCP review.',
+      'Nisha: Provision is largely working; we’d recommend more SaLT input.',
+      'Priya: I agree, and transport for September needs confirming.',
+    ],
+    summary:
+      'Annual EHCP review for Aanya Sharma. The current plan is broadly effective; the team recommended increasing Speech & Language input and confirmed the September specialist placement. Parental consent obtained to share the updated draft with health. Transport arrangements still outstanding.',
+    decisions: ['Increase SaLT input', 'Confirm September placement', 'Share updated EHCP draft with health'],
+    actions: [
+      { title: 'Update EHCP draft with increased SaLT provision', assigneeParticipantId: 'sean', category: 'education', priority: 'high' },
+      { title: 'Confirm September transport arrangements', assigneeParticipantId: 'sean', category: 'admin', priority: 'high' },
+      { title: 'Share updated draft to shared care record', assigneeParticipantId: 'nisha', category: 'admin', priority: 'medium' },
+    ],
+  },
+  'apt-a3': {
+    agenda: ['SaLT assessment review', 'Targets', 'Home strategies'],
+    captions: [
+      'Rachel: Aanya’s expressive language has progressed since the last review.',
+      'Priya: She’s using more full sentences at home.',
+      'Rachel: I’ll set new targets and share home practice activities.',
+    ],
+    summary:
+      'Speech & Language review for Aanya Sharma. Expressive language has improved. New termly targets agreed, with home-practice activities to be shared with the family and school. Next review in one term.',
+    decisions: ['Set new termly targets', 'Share home-practice activities'],
+    actions: [
+      { title: 'Share SaLT home-practice pack with family', assigneeParticipantId: 'rachel', category: 'health', priority: 'medium' },
+      { title: 'Send updated targets to school', assigneeParticipantId: 'rachel', category: 'education', priority: 'medium' },
+    ],
+  },
+  'apt-m1': {
+    agenda: ['Home assessment findings', 'Adaptations', 'Timescales'],
+    captions: [
+      'Tom: The hallway and bathroom need grab rails; stairs need a rail or lift.',
+      'Grace: Mum manages the stairs slowly but safely with support.',
+      'Tom: I’ll refer to Torus for fitting and a stair-lift survey.',
+    ],
+    summary:
+      'Home adaptation assessment for Margaret Okafor. Grab rails recommended for hallway and bathroom; stair-lift survey to follow. Daughter present and in agreement. Referral to Torus Housing for fitting prioritised ahead of discharge.',
+    decisions: ['Fit grab rails', 'Arrange stair-lift survey'],
+    actions: [
+      { title: 'Refer grab-rail fitting to Torus Housing', assigneeParticipantId: 'tom', category: 'housing', priority: 'high' },
+      { title: 'Arrange stair-lift survey', assigneeParticipantId: 'fiona', category: 'housing', priority: 'medium' },
+    ],
+  },
+  'apt-m2': {
+    agenda: ['Medical readiness', 'Care package', 'Home & equipment', 'Discharge date'],
+    captions: [
+      'David: Margaret is medically fit pending the care package being in place.',
+      'Amara: We can start four visits a day from Monday.',
+      'Grace: The adaptations should be done by then.',
+    ],
+    summary:
+      'Discharge planning meeting for Margaret Okafor. Medically fit for discharge once the home care package and adaptations are in place. Adult social care to commence 4× daily visits from Monday; district nursing to be scheduled; housing adaptations to be completed first. Target discharge end of week, subject to confirmation.',
+    decisions: ['Commence 4× daily care from Monday', 'Complete adaptations before discharge', 'Confirm discharge date once package live'],
+    actions: [
+      { title: 'Commence care package (4× daily)', assigneeParticipantId: 'amara', category: 'social_care', priority: 'high' },
+      { title: 'Schedule district nursing visits', assigneeParticipantId: 'david', category: 'health', priority: 'high' },
+      { title: 'Confirm adaptations completed before discharge', assigneeParticipantId: 'fiona', category: 'housing', priority: 'medium' },
+    ],
+  },
+}
+
+// ---------------------------------------------------------------------------
 // Message threads
 // ---------------------------------------------------------------------------
 export const seedThreads: MessageThread[] = [
@@ -389,6 +473,13 @@ export const seedThreads: MessageThread[] = [
     messages: [
       { id: 'msg-a1', fromParticipantId: 'sean', body: 'Hi Priya — we’re booking Aanya’s annual review. Are you free week commencing 29th June?', timestamp: daysAgo(5) },
       { id: 'msg-a2', fromParticipantId: 'priya', body: 'Yes, mornings work best for me. Thank you.', timestamp: daysAgo(4) },
+    ],
+  },
+  {
+    id: 'thr-a2', serviceUserId: 'aanya', subject: 'CAMHS — therapy & sleep',
+    participantIds: ['priya', 'yasmin'],
+    messages: [
+      { id: 'msg-a3', fromParticipantId: 'yasmin', body: 'Hi Priya — following Aanya’s last session, how has her sleep been this week?', timestamp: daysAgo(3) },
     ],
   },
   {

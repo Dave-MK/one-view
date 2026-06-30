@@ -12,6 +12,7 @@ import type {
   MessageThread,
   Notification,
   AccessLogEntry,
+  MeetingOutcome,
   Category,
   Sensitivity,
 } from '@/types'
@@ -29,6 +30,7 @@ import {
   seedThreads,
   seedNotifications,
   seedAccessLog,
+  meetingScripts,
 } from '@/data/seed'
 
 // ---------------------------------------------------------------------------
@@ -63,6 +65,7 @@ export function canSee(
 // State
 // ---------------------------------------------------------------------------
 export interface AppState {
+  loggedIn: boolean
   activeParticipantId: string
   activeServiceUserId: string
   relationships: Relationship[]
@@ -73,9 +76,11 @@ export interface AppState {
   threads: MessageThread[]
   notifications: Notification[]
   accessLog: AccessLogEntry[]
+  meetingOutcomes: MeetingOutcome[]
 }
 
 const initialState: AppState = {
+  loggedIn: false,
   activeParticipantId: 'priya', // a parent by default
   activeServiceUserId: 'aanya',
   relationships: seedRelationships,
@@ -86,18 +91,21 @@ const initialState: AppState = {
   threads: seedThreads,
   notifications: seedNotifications,
   accessLog: seedAccessLog,
+  meetingOutcomes: [],
 }
 
 // ---------------------------------------------------------------------------
 // Actions
 // ---------------------------------------------------------------------------
 export type AppAction =
+  | { type: 'SET_LOGGED_IN'; payload: boolean }
   | { type: 'SET_PARTICIPANT'; payload: string }
   | { type: 'SET_SERVICE_USER'; payload: string }
   | { type: 'ADD_EVENT'; payload: TimelineEvent }
   | { type: 'ADD_TASK'; payload: Task }
   | { type: 'COMPLETE_TASK'; payload: string }
   | { type: 'ADD_MESSAGE'; payload: { threadId: string; fromParticipantId: string; body: string } }
+  | { type: 'COMPLETE_MEETING'; payload: { appointmentId: string } }
   | { type: 'UPDATE_RELATIONSHIP'; payload: { id: string; allowedCategories: Category[] } }
   | { type: 'MARK_NOTIFICATION_READ'; payload: string }
   | { type: 'LOG_ACCESS'; payload: AccessLogEntry }
@@ -112,6 +120,9 @@ export function nextSeq(): number {
 
 function appReducer(state: AppState, action: AppAction): AppState {
   switch (action.type) {
+    case 'SET_LOGGED_IN':
+      return { ...state, loggedIn: action.payload }
+
     case 'SET_PARTICIPANT':
       return { ...state, activeParticipantId: action.payload }
 
@@ -167,6 +178,65 @@ function appReducer(state: AppState, action: AppAction): AppState {
         ),
       }
 
+    case 'COMPLETE_MEETING': {
+      const appt = state.appointments.find((a) => a.id === action.payload.appointmentId)
+      const script = meetingScripts[action.payload.appointmentId]
+      if (!appt || !script) return state
+      if (state.meetingOutcomes.some((o) => o.appointmentId === appt.id)) return state
+      const now = new Date().toISOString()
+      const due = new Date(Date.now() + 5 * 86400000).toISOString()
+      const summaryEvent: TimelineEvent = {
+        id: `evt-mtg-${nextSeq()}`,
+        serviceUserId: appt.serviceUserId,
+        type: 'meeting_summary',
+        title: `Meeting summary — ${appt.title}`,
+        timestamp: now,
+        sourceOrganisationId: appt.sourceOrganisationId,
+        category: appt.category,
+        sensitivity: appt.sensitivity,
+        note: script.summary,
+      }
+      const newTasks: Task[] = script.actions.map((a) => ({
+        id: `task-mtg-${nextSeq()}`,
+        serviceUserId: appt.serviceUserId,
+        title: a.title,
+        assigneeParticipantId: a.assigneeParticipantId,
+        dueDate: due,
+        priority: a.priority,
+        status: 'not_started',
+        category: a.category,
+      }))
+      const rel = relationshipFor(state.relationships, state.activeParticipantId, appt.serviceUserId)
+      const logEntry: AccessLogEntry = {
+        id: `log-mtg-${nextSeq()}`,
+        actorParticipantId: state.activeParticipantId,
+        serviceUserId: appt.serviceUserId,
+        action: 'updated_record',
+        lawfulBasis: rel?.lawfulBasis ?? 'Direct Care',
+        detail: `Meeting recorded; AI generated a summary and ${newTasks.length} actions`,
+        timestamp: now,
+      }
+      const notif: Notification = {
+        id: `notif-mtg-${nextSeq()}`,
+        serviceUserId: appt.serviceUserId,
+        eventId: summaryEvent.id,
+        message: `Meeting summary and ${newTasks.length} actions ready: ${appt.title}`,
+        timestamp: now,
+        read: false,
+      }
+      return {
+        ...state,
+        events: [summaryEvent, ...state.events],
+        tasks: [...newTasks, ...state.tasks],
+        notifications: [notif, ...state.notifications],
+        accessLog: [logEntry, ...state.accessLog],
+        meetingOutcomes: [
+          { appointmentId: appt.id, serviceUserId: appt.serviceUserId, summary: script.summary, decisions: script.decisions, actionTitles: script.actions.map((a) => a.title), completedAt: now },
+          ...state.meetingOutcomes,
+        ],
+      }
+    }
+
     case 'UPDATE_RELATIONSHIP':
       return {
         ...state,
@@ -189,7 +259,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
       return { ...state, accessLog: [action.payload, ...state.accessLog] }
 
     case 'RESET_DEMO':
-      return { ...initialState, activeParticipantId: state.activeParticipantId, activeServiceUserId: state.activeServiceUserId }
+      return { ...initialState, loggedIn: state.loggedIn, activeParticipantId: state.activeParticipantId, activeServiceUserId: state.activeServiceUserId }
 
     default:
       return state

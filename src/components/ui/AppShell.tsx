@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { Icon, LogoMark } from './Icon'
@@ -27,20 +27,20 @@ export function homeRouteFor(participantId: string): string {
 }
 
 // ---------------------------------------------------------------------------
-// Sidebar
+// Sidebar content — shared by the desktop sidebar and the mobile drawer
 // ---------------------------------------------------------------------------
-function Sidebar({ nav, sectionLabel }: { nav: NavItem[]; sectionLabel: string }) {
+function SidebarContent({ nav, sectionLabel, onNavigate }: { nav: NavItem[]; sectionLabel: string; onNavigate?: () => void }) {
   const pathname = usePathname()
-  const { unreadCount } = useApp()
+  const { state, dispatch, unreadCount } = useApp()
+  const home = homeRouteFor(state.activeParticipantId)
 
   return (
-    <aside
-      className="hidden lg:flex flex-col w-60 flex-shrink-0 border-r"
-      style={{ backgroundColor: '#fff', borderColor: 'var(--border)' }}
-    >
+    <>
       <div className="h-16 flex items-center gap-2 px-5 border-b" style={{ borderColor: 'var(--border)' }}>
-        <LogoMark />
-        <span className="font-bold text-lg" style={{ color: 'var(--brand-800)' }}>{PRODUCT_NAME}</span>
+        <Link href={home} onClick={onNavigate} className="flex items-center gap-2" aria-label={`${PRODUCT_NAME} home`}>
+          <LogoMark />
+          <span className="font-bold text-lg" style={{ color: 'var(--brand-800)' }}>{PRODUCT_NAME}</span>
+        </Link>
       </div>
       <nav className="flex-1 overflow-y-auto py-4 px-3 scroll-thin" aria-label={sectionLabel}>
         <p className="px-3 mb-2 text-[11px] font-semibold uppercase tracking-wider" style={{ color: 'var(--text-faint)' }}>
@@ -54,6 +54,7 @@ function Sidebar({ nav, sectionLabel }: { nav: NavItem[]; sectionLabel: string }
               <li key={item.href}>
                 <Link
                   href={item.href}
+                  onClick={onNavigate}
                   aria-current={active ? 'page' : undefined}
                   className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium transition-colors"
                   style={{
@@ -80,6 +81,7 @@ function Sidebar({ nav, sectionLabel }: { nav: NavItem[]; sectionLabel: string }
       <div className="border-t px-3 py-3" style={{ borderColor: 'var(--border)' }}>
         <Link
           href="/login"
+          onClick={() => { dispatch({ type: 'SET_LOGGED_IN', payload: false }); onNavigate?.() }}
           className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium"
           style={{ color: 'var(--text-muted)' }}
         >
@@ -87,7 +89,28 @@ function Sidebar({ nav, sectionLabel }: { nav: NavItem[]; sectionLabel: string }
           Log out
         </Link>
       </div>
-    </aside>
+    </>
+  )
+}
+
+// Mobile drawer
+function MobileSidebar({ nav, sectionLabel, open, onClose }: { nav: NavItem[]; sectionLabel: string; open: boolean; onClose: () => void }) {
+  if (!open) return null
+  return (
+    <div className="lg:hidden fixed inset-0 z-50 flex">
+      <div className="absolute inset-0" style={{ backgroundColor: 'rgba(15,23,42,0.45)' }} onClick={onClose} aria-hidden="true" />
+      <aside className="relative flex flex-col w-64 max-w-[80%] h-full" style={{ backgroundColor: '#fff' }}>
+        <button
+          onClick={onClose}
+          aria-label="Close menu"
+          className="absolute top-4 right-3 p-1.5 rounded-md"
+          style={{ color: 'var(--text-muted)' }}
+        >
+          <Icon name="close" size={20} />
+        </button>
+        <SidebarContent nav={nav} sectionLabel={sectionLabel} onNavigate={onClose} />
+      </aside>
+    </div>
   )
 }
 
@@ -178,8 +201,9 @@ function Switchers() {
 // ---------------------------------------------------------------------------
 // Topbar
 // ---------------------------------------------------------------------------
-function Topbar({ title }: { title: string }) {
-  const { activeParticipant, unreadCount } = useApp()
+function Topbar({ title, onMenu }: { title: string; onMenu: () => void }) {
+  const { state, activeParticipant, unreadCount } = useApp()
+  const home = homeRouteFor(state.activeParticipantId)
 
   return (
     <header
@@ -187,7 +211,10 @@ function Topbar({ title }: { title: string }) {
       style={{ backgroundColor: '#fff', borderColor: 'var(--border)' }}
     >
       <div className="flex items-center gap-2 min-w-0">
-        <span className="lg:hidden"><LogoMark size={20} /></span>
+        <button onClick={onMenu} className="lg:hidden p-2 -ml-2 rounded-md" style={{ color: 'var(--text-muted)' }} aria-label="Open menu">
+          <Icon name="menu" size={22} />
+        </button>
+        <Link href={home} className="lg:hidden flex-shrink-0" aria-label={`${PRODUCT_NAME} home`}><LogoMark size={20} /></Link>
         <h1 className="text-base sm:text-lg font-semibold truncate" style={{ color: 'var(--brand-800)' }}>{title}</h1>
       </div>
       <div className="flex items-center gap-3">
@@ -217,15 +244,19 @@ export function AppShell({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
+  const [mobileOpen, setMobileOpen] = useState(false)
   // Title = deepest matching nav item's label (falls back to the section label)
   const match = [...nav].sort((a, b) => b.href.length - a.href.length).find((n) => pathname === n.href || pathname.startsWith(n.href + '/'))
   const title = match?.label ?? sectionLabel
 
   return (
     <div className="flex h-screen overflow-hidden" style={{ backgroundColor: 'var(--bg)' }}>
-      <Sidebar nav={nav} sectionLabel={sectionLabel} />
+      <aside className="hidden lg:flex flex-col w-60 flex-shrink-0 border-r" style={{ backgroundColor: '#fff', borderColor: 'var(--border)' }}>
+        <SidebarContent nav={nav} sectionLabel={sectionLabel} />
+      </aside>
+      <MobileSidebar nav={nav} sectionLabel={sectionLabel} open={mobileOpen} onClose={() => setMobileOpen(false)} />
       <div className="flex-1 flex flex-col min-w-0">
-        <Topbar title={title} />
+        <Topbar title={title} onMenu={() => setMobileOpen(true)} />
         <main className="flex-1 overflow-y-auto scroll-thin">{children}</main>
       </div>
     </div>

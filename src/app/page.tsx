@@ -20,7 +20,7 @@ const FEATURES = [
 
 const SERVICE_USER_SIDE = ['Citizen', 'Parent', 'Carer', 'Guardian', 'Advocate']
 const PROVIDER_SIDE = ['Local Authority', 'NHS', 'Schools', 'Police', 'Housing', 'VCSE', 'Private providers']
-const SHARED_LAYER = ['Timeline', 'Tasks', 'Events', 'Documents', 'Notifications', 'Messaging', 'Audit', 'Governance', 'Reporting']
+const SHARED_LAYER = ['Timeline', 'Tasks', 'Events', 'Documents', 'Meetings', 'Notifications', 'Messaging', 'Audit', 'Governance', 'Reporting']
 
 const DOMAINS = [
   { tag: 'Example A', title: 'SEND', body: "A child's Education, Health & Care journey across school, CAMHS, OT and the local authority.", color: '#2563eb', live: true },
@@ -146,6 +146,9 @@ export default function LandingPage() {
               <span key={s} className="text-sm font-medium px-3 py-1.5 rounded-lg bg-white border" style={{ borderColor: 'var(--border)', color: 'var(--brand-700)' }}>{s}</span>
             ))}
           </div>
+          <p className="mt-4 text-sm max-w-2xl mx-auto" style={{ color: 'var(--text-muted)' }}>
+            OneView is the system of record for <strong>coordination</strong> — the timeline, actions, messages and consent that sit <em>between</em> services. It is never the system of record for <strong>content</strong>: clinical notes, assessments and documents are authored in, and stay in, the services that own them.
+          </p>
         </div>
       </section>
 

@@ -53,8 +53,15 @@ export default function EventDetailPage() {
             </div>
             <h1 className="text-2xl font-bold leading-snug mb-3 font-display" style={{ color: 'var(--brand-800)' }}>{event.title}</h1>
             <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Recorded: {formatDateTime(event.timestamp)}</p>
-            <div className="mt-5 rounded-xl border-l-4 px-4 py-3" style={{ backgroundColor: 'var(--surface-2)', borderLeftColor: '#9ca3af' }}>
-              <p className="text-sm" style={{ color: '#475569' }}>This event was received from the source system as a status update — there is no further detail to display.</p>
+            <div className="mt-5 rounded-xl border-l-4 px-4 py-3" style={{ backgroundColor: event.note ? '#f0f9ff' : 'var(--surface-2)', borderLeftColor: event.note ? 'var(--brand-700)' : '#9ca3af' }}>
+              {event.note ? (
+                <>
+                  <p className="text-xs font-semibold uppercase tracking-wide mb-1" style={{ color: 'var(--brand-700)' }}>AI meeting summary</p>
+                  <p className="text-sm leading-relaxed" style={{ color: '#334155' }}>{event.note}</p>
+                </>
+              ) : (
+                <p className="text-sm" style={{ color: '#475569' }}>This event was received from the source system as a status update — there is no further detail to display.</p>
+              )}
             </div>
           </div>
           <SourceFooter sourceOrganisationId={event.sourceOrganisationId} kind="event" />

@@ -26,6 +26,7 @@ function LoginInner() {
   // Prototype "sign in": jump straight into the relevant dashboard with a
   // sensible default persona for that side.
   function enter(provider: boolean) {
+    dispatch({ type: 'SET_LOGGED_IN', payload: true })
     if (provider) {
       dispatch({ type: 'SET_PARTICIPANT', payload: 'sean' })
       router.push('/provider')

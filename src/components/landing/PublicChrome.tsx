@@ -4,6 +4,8 @@ import React from 'react'
 import Link from 'next/link'
 import { LogoMark } from '../ui/Icon'
 import { PRODUCT_NAME } from '@/lib/constants'
+import { useApp } from '@/context/AppContext'
+import { homeRouteFor } from '../ui/AppShell'
 
 const NAV = [
   { label: 'How it works', href: '#how-it-works' },
@@ -14,10 +16,13 @@ const NAV = [
 ]
 
 export function PublicNav() {
+  const { state } = useApp()
+  const home = state.loggedIn ? homeRouteFor(state.activeParticipantId) : '/'
+
   return (
     <header className="sticky top-0 z-30 w-full border-b" style={{ backgroundColor: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(8px)', borderColor: 'var(--border)' }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
-        <Link href="/" className="flex items-center gap-2 flex-shrink-0">
+        <Link href={home} className="flex items-center gap-2 flex-shrink-0" aria-label={`${PRODUCT_NAME} home`}>
           <LogoMark />
           <span className="font-bold text-lg" style={{ color: 'var(--brand-800)' }}>{PRODUCT_NAME}</span>
         </Link>
@@ -29,8 +34,14 @@ export function PublicNav() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
-          <Link href="/login" className="text-sm font-medium px-3 py-1.5 rounded-lg" style={{ color: 'var(--brand-700)' }}>Log in</Link>
-          <Link href="/login?tab=create" className="text-sm font-semibold px-4 py-1.5 rounded-lg text-white" style={{ backgroundColor: 'var(--brand-800)' }}>Sign up</Link>
+          {state.loggedIn ? (
+            <Link href={home} className="text-sm font-semibold px-4 py-1.5 rounded-lg text-white" style={{ backgroundColor: 'var(--brand-800)' }}>Go to dashboard</Link>
+          ) : (
+            <>
+              <Link href="/login" className="text-sm font-medium px-3 py-1.5 rounded-lg" style={{ color: 'var(--brand-700)' }}>Log in</Link>
+              <Link href="/login?tab=create" className="text-sm font-semibold px-4 py-1.5 rounded-lg text-white" style={{ backgroundColor: 'var(--brand-800)' }}>Sign up</Link>
+            </>
+          )}
         </div>
       </div>
     </header>

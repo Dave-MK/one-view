@@ -58,7 +58,7 @@ export default function ProviderDashboard() {
       <div className="flex items-start justify-between gap-3 mb-5">
         <div>
           <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>Dashboard</h2>
-          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Overview of your work and caseload — {activeParticipant.name}, {activeParticipant.baseRole}.</p>
+          <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Your cross-agency coordination view — {activeParticipant.name}, {activeParticipant.baseRole}. OneView surfaces and connects; the records stay in each service’s system.</p>
         </div>
         <CreateTaskButton />
       </div>
@@ -76,7 +76,8 @@ export default function ProviderDashboard() {
         {/* Tasks table */}
         <Card className="lg:col-span-2" padded={false}>
           <div className="px-5 pt-5">
-            <SectionHeader title="My tasks" action={<Link href="/provider/tasks" className="text-xs font-medium" style={{ color: 'var(--brand-700)' }}>View all</Link>} />
+            <SectionHeader title="Coordination actions" action={<Link href="/provider/tasks" className="text-xs font-medium" style={{ color: 'var(--brand-700)' }}>View all</Link>} />
+            <p className="text-xs -mt-1 mb-2" style={{ color: 'var(--text-faint)' }}>Who owes what across agencies. The underlying records live in each service’s own system.</p>
           </div>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">

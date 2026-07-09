@@ -55,16 +55,16 @@ export default function ProviderDashboard() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
       {/* Header */}
-      <div className="flex items-start justify-between gap-3 mb-5">
+      <div className="flex items-start justify-between gap-3 mb-5" data-tour="provider-welcome">
         <div>
           <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>Dashboard</h2>
           <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Your cross-agency coordination view — {activeParticipant.name}, {activeParticipant.baseRole}. OneView surfaces and connects; the records stay in each service’s system.</p>
         </div>
-        <CreateTaskButton />
+        <div data-tour="provider-new-action"><CreateTaskButton /></div>
       </div>
 
       {/* Stat cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-5">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-5" data-tour="provider-stats">
         <StatCard label="My caseload" value={caseload.length} sub="People I support" />
         <StatCard label="Tasks due" value={dueThisWeek} sub="This week" />
         <StatCard label="Overdue" value={overdue} sub="Require attention" tone={overdue > 0 ? 'danger' : 'neutral'} />
@@ -74,7 +74,7 @@ export default function ProviderDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Tasks table */}
-        <Card className="lg:col-span-2" padded={false}>
+        <Card className="lg:col-span-2" padded={false} tourId="provider-actions">
           <div className="px-5 pt-5">
             <SectionHeader title="Coordination actions" action={<Link href="/provider/tasks" className="text-xs font-medium" style={{ color: 'var(--brand-700)' }}>View all</Link>} />
             <p className="text-xs -mt-1 mb-2" style={{ color: 'var(--text-faint)' }}>Who owes what across agencies. The underlying records live in each service’s own system.</p>
@@ -106,7 +106,7 @@ export default function ProviderDashboard() {
         </Card>
 
         {/* Caseload by status */}
-        <Card>
+        <Card tourId="provider-caseload-chart">
           <SectionHeader title="Caseload by status" />
           {donut.length === 0 ? <EmptyState title="No tasks" /> : <Donut data={donut} centerLabel="tasks" />}
         </Card>

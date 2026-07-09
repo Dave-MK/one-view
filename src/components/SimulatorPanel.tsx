@@ -94,7 +94,7 @@ export function SimulatorPanel() {
   }
 
   return (
-    <div className="rounded-xl border overflow-hidden" style={{ borderColor: 'var(--border)', backgroundColor: '#fff' }}>
+    <div className="rounded-xl border overflow-hidden" style={{ borderColor: 'var(--border)', backgroundColor: '#fff' }} data-tour="home-simulator">
       {/* Header */}
       <button
         onClick={() => setOpen((o) => !o)}

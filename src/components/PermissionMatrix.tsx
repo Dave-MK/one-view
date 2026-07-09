@@ -48,7 +48,7 @@ export function PermissionMatrix({ editable = false }: { editable?: boolean }) {
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border bg-white" style={{ borderColor: 'var(--border-2)' }}>
+    <div className="overflow-x-auto rounded-xl border bg-white" style={{ borderColor: 'var(--border-2)' }} data-tour="permission-matrix">
       <table className="w-full border-collapse text-sm">
         <thead>
           <tr style={{ backgroundColor: '#f0f4fa' }}>

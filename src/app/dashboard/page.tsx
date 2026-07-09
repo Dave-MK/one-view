@@ -31,7 +31,7 @@ export default function ServiceUserHome() {
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
       {/* Welcome */}
-      <div className="mb-6">
+      <div className="mb-6" data-tour="home-welcome">
         <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>Welcome back, {firstName}</h2>
         <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
           Here’s what’s happening with <strong>{activeServiceUser.name}</strong>’s support — {activeServiceUser.contextLabel}.
@@ -39,7 +39,7 @@ export default function ServiceUserHome() {
       </div>
 
       {/* Journey overview */}
-      <Card className="mb-6">
+      <Card className="mb-6" tourId="home-journey">
         <SectionHeader title="Journey overview" action={<Link href="/dashboard/journey" className="text-xs font-medium" style={{ color: 'var(--brand-700)' }}>View timeline</Link>} />
         <div className="overflow-x-auto pb-1">
           <div style={{ minWidth: stages.length * 100 }}>
@@ -51,7 +51,7 @@ export default function ServiceUserHome() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Left two columns */}
         <div className="lg:col-span-2 flex flex-col gap-5">
-          <Card>
+          <Card tourId="home-attention">
             <SectionHeader title="Needs attention" />
             {attention.length === 0 ? (
               <p className="text-sm" style={{ color: 'var(--text-faint)' }}>Nothing needs your attention right now.</p>
@@ -71,7 +71,7 @@ export default function ServiceUserHome() {
             )}
           </Card>
 
-          <Card>
+          <Card tourId="home-appointments">
             <SectionHeader title="Upcoming appointments" action={<Link href="/dashboard/appointments" className="text-xs font-medium" style={{ color: 'var(--brand-700)' }}>View all</Link>} />
             {visibleAppointments.length === 0 ? (
               <p className="text-sm" style={{ color: 'var(--text-faint)' }}>No upcoming appointments visible to you.</p>
@@ -94,7 +94,7 @@ export default function ServiceUserHome() {
             )}
           </Card>
 
-          <Card>
+          <Card tourId="home-people">
             <SectionHeader title="People involved" action={<Link href="/dashboard/people" className="text-xs font-medium" style={{ color: 'var(--brand-700)' }}>View all</Link>} />
             <div className="flex flex-wrap gap-4">
               {team.map(({ rel, p }) => (

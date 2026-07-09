@@ -11,13 +11,13 @@ export default function ConsentManagementPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
-      <div className="mb-5">
+      <div className="mb-5" data-tour="consent-intro">
         <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>Consent management</h2>
         <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Govern which categories each relationship may access. Changes are logged to the audit trail immediately.</p>
       </div>
 
       {/* Case selector */}
-      <div className="flex items-center gap-2 mb-4 flex-wrap">
+      <div className="flex items-center gap-2 mb-4 flex-wrap" data-tour="consent-case-selector">
         {serviceUsers.map((su) => {
           const active = su.id === activeServiceUser.id
           return (

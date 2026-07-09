@@ -15,7 +15,7 @@ export default function AuditLogPage() {
   const { state } = useApp()
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
-      <div className="mb-5">
+      <div className="mb-5" data-tour="page-intro">
         <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>Audit log</h2>
         <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Immutable record of every access and change. Firing demo events or changing permissions adds new entries here in real time.</p>
       </div>

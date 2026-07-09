@@ -51,7 +51,7 @@ export default function LandingPage() {
       {/* Hero */}
       <section className="relative overflow-hidden" style={{ backgroundColor: 'var(--surface-2)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-14 sm:py-20 grid grid-cols-1 lg:grid-cols-2 gap-10 items-center">
-          <div>
+          <div data-tour="landing-hero">
             <span className="inline-flex items-center gap-2 text-xs font-semibold px-3 py-1 rounded-full mb-5" style={{ backgroundColor: '#eff4ff', color: 'var(--brand-700)' }}>
               <LogoMark size={14} /> A coordination layer, not another portal
             </span>
@@ -61,7 +61,7 @@ export default function LandingPage() {
             <p className="mt-5 text-lg leading-relaxed max-w-xl" style={{ color: 'var(--text-muted)' }}>
               {PRODUCT_NAME} brings the right people and the right information together to coordinate support around what matters most — the person. Everyone legitimately involved works from one shared, consent-controlled picture.
             </p>
-            <div className="mt-7 flex flex-col sm:flex-row gap-3">
+            <div className="mt-7 flex flex-col sm:flex-row gap-3" data-tour="landing-cta">
               <Link href="/login" className="flex-1 rounded-xl px-5 py-3.5 text-white text-center" style={{ backgroundColor: 'var(--brand-800)' }}>
                 <span className="block font-semibold">I need support</span>
                 <span className="block text-xs opacity-80">Access your journey</span>
@@ -128,7 +128,7 @@ export default function LandingPage() {
       </section>
 
       {/* Two worlds, one layer */}
-      <section id="two-worlds" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+      <section id="two-worlds" data-tour="landing-two-worlds" className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="text-center max-w-2xl mx-auto mb-10">
           <h2 className="font-display text-3xl font-bold" style={{ color: 'var(--brand-900)' }}>Two worlds, one shared layer</h2>
           <p className="mt-3" style={{ color: 'var(--text-muted)' }}>
@@ -198,7 +198,7 @@ export default function LandingPage() {
       </section>
 
       {/* Journeys */}
-      <section id="journeys" style={{ backgroundColor: 'var(--surface-2)' }}>
+      <section id="journeys" data-tour="landing-journeys" style={{ backgroundColor: 'var(--surface-2)' }}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center max-w-2xl mx-auto mb-10">
             <h2 className="font-display text-3xl font-bold" style={{ color: 'var(--brand-900)' }}>Everyone has a journey</h2>

@@ -9,7 +9,7 @@ export default function JourneyPage() {
   const { activeServiceUser } = useApp()
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-6">
-      <div className="mb-4">
+      <div className="mb-4" data-tour="journey-intro">
         <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>My journey</h2>
         <p className="text-sm" style={{ color: 'var(--text-muted)' }}>
           A single, consent-filtered timeline of {activeServiceUser.name}’s support — every event labelled with the source system it came from.

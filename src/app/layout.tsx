@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import { AppProvider } from '@/context/AppContext'
+import { TutorialProvider } from '@/context/TutorialContext'
+import { TutorialOverlay } from '@/components/tutorial/TutorialOverlay'
 import { PRODUCT_NAME } from '@/lib/constants'
 
 export const metadata: Metadata = {
@@ -13,7 +15,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className="h-full antialiased">
       <body className="min-h-full">
-        <AppProvider>{children}</AppProvider>
+        <AppProvider>
+          <TutorialProvider>
+            {children}
+            <TutorialOverlay />
+          </TutorialProvider>
+        </AppProvider>
       </body>
     </html>
   )

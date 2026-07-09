@@ -22,7 +22,7 @@ export default function AppointmentsPage() {
 
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 py-6">
-      <div className="mb-5">
+      <div className="mb-5" data-tour="appointments-intro">
         <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>Appointments</h2>
         <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Upcoming appointments visible to you for {activeServiceUser.name}. Meetings are hosted in OneView — join, and the discussion is turned into a shared summary and actions.</p>
       </div>
@@ -47,9 +47,9 @@ export default function AppointmentsPage() {
                 </div>
                 {joinable && (
                   done ? (
-                    <button onClick={() => setOpenId(a.id)} className="text-sm font-medium px-3 py-1.5 rounded-lg border flex-shrink-0" style={{ borderColor: 'var(--border-2)', color: 'var(--brand-700)' }}>View summary</button>
+                    <button onClick={() => setOpenId(a.id)} data-tour="appointments-meeting-btn" className="text-sm font-medium px-3 py-1.5 rounded-lg border flex-shrink-0" style={{ borderColor: 'var(--border-2)', color: 'var(--brand-700)' }}>View summary</button>
                   ) : (
-                    <button onClick={() => setOpenId(a.id)} className="text-sm font-semibold px-3.5 py-1.5 rounded-lg text-white flex-shrink-0" style={{ backgroundColor: 'var(--brand-800)' }}>Join meeting</button>
+                    <button onClick={() => setOpenId(a.id)} data-tour="appointments-meeting-btn" className="text-sm font-semibold px-3.5 py-1.5 rounded-lg text-white flex-shrink-0" style={{ backgroundColor: 'var(--brand-800)' }}>Join meeting</button>
                   )
                 )}
               </Card>

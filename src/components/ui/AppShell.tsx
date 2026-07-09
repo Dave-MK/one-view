@@ -9,6 +9,7 @@ import { PRODUCT_NAME } from '@/lib/constants'
 import { useApp, participants, serviceUsers } from '@/context/AppContext'
 import { relationshipFor } from '@/context/AppContext'
 import { organisationMap } from '@/data/seed'
+import { useTutorial } from '@/context/TutorialContext'
 
 export interface NavItem {
   label: string
@@ -32,7 +33,15 @@ export function homeRouteFor(participantId: string): string {
 function SidebarContent({ nav, sectionLabel, onNavigate }: { nav: NavItem[]; sectionLabel: string; onNavigate?: () => void }) {
   const pathname = usePathname()
   const { state, dispatch, unreadCount } = useApp()
+  const { start, hasTour } = useTutorial()
   const home = homeRouteFor(state.activeParticipantId)
+
+  function handleTour() {
+    onNavigate?.()
+    // Let the mobile drawer close (and its content settle) before the
+    // overlay measures the target element underneath it.
+    setTimeout(() => start(pathname), onNavigate ? 320 : 0)
+  }
 
   return (
     <>
@@ -79,7 +88,17 @@ function SidebarContent({ nav, sectionLabel, onNavigate }: { nav: NavItem[]; sec
           })}
         </ul>
       </nav>
-      <div className="border-t px-3 py-3" style={{ borderColor: 'var(--border)' }}>
+      <div className="border-t px-3 py-3 flex flex-col gap-0.5" style={{ borderColor: 'var(--border)' }}>
+        {hasTour(pathname) && (
+          <button
+            onClick={handleTour}
+            className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm font-medium text-left"
+            style={{ color: 'var(--text-muted)' }}
+          >
+            <Icon name="help" size={18} />
+            Take the tour
+          </button>
+        )}
         <Link
           href="/login"
           onClick={() => { dispatch({ type: 'SET_LOGGED_IN', payload: false }); onNavigate?.() }}
@@ -204,7 +223,10 @@ function Switchers({ onAfterChange }: { onAfterChange?: () => void }) {
 // ---------------------------------------------------------------------------
 function Topbar({ title, onMenu }: { title: string; onMenu: () => void }) {
   const { state, activeParticipant, unreadCount } = useApp()
+  const { start, hasTour } = useTutorial()
+  const pathname = usePathname()
   const home = homeRouteFor(state.activeParticipantId)
+  const tourAvailable = hasTour(pathname)
 
   return (
     <header
@@ -219,6 +241,17 @@ function Topbar({ title, onMenu }: { title: string; onMenu: () => void }) {
         <h1 className="text-base sm:text-lg font-semibold truncate" style={{ color: 'var(--brand-800)' }}>{title}</h1>
       </div>
       <div className="flex items-center gap-3">
+        <button
+          type="button"
+          onClick={() => start(pathname)}
+          disabled={!tourAvailable}
+          className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-full border"
+          style={{ borderColor: 'var(--border-2)', color: 'var(--brand-700)', opacity: tourAvailable ? 1 : 0.35, cursor: tourAvailable ? 'pointer' : 'default' }}
+          aria-label="Take a tour of this page"
+          title="Take a tour of this page"
+        >
+          <Icon name="help" size={18} />
+        </button>
         <button type="button" className="relative p-2 rounded-full" style={{ color: 'var(--text-muted)' }} aria-label={`Notifications${unreadCount ? `, ${unreadCount} unread` : ''}`}>
           <Icon name="bell" size={20} />
           {unreadCount > 0 && (

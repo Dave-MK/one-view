@@ -62,7 +62,7 @@ export function Timeline({ linkable = true }: { linkable?: boolean }) {
 
   return (
     <section className="flex flex-col h-full" aria-label="Activity timeline">
-      <div className="sticky top-0 z-10 bg-white border-b px-4 pt-4 pb-3" style={{ borderColor: 'var(--border)' }}>
+      <div className="sticky top-0 z-10 bg-white border-b px-4 pt-4 pb-3" style={{ borderColor: 'var(--border)' }} data-tour="journey-filters">
         <div className="flex items-center justify-between mb-3">
           <h2 className="text-base font-semibold" style={{ color: 'var(--brand-800)' }}>Activity Timeline</h2>
           <span className="text-xs font-medium" style={{ color: 'var(--text-faint)' }}>
@@ -99,7 +99,7 @@ export function Timeline({ linkable = true }: { linkable?: boolean }) {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-4 py-4 scroll-thin">
+      <div className="flex-1 overflow-y-auto px-4 py-4 scroll-thin" data-tour="journey-events">
         {filtered.length === 0 ? (
           <EmptyState
             title="No events visible"

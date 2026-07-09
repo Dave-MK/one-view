@@ -2,9 +2,11 @@
 
 import React from 'react'
 import Link from 'next/link'
-import { LogoMark } from '../ui/Icon'
+import { usePathname } from 'next/navigation'
+import { LogoMark, Icon } from '../ui/Icon'
 import { PRODUCT_NAME } from '@/lib/constants'
 import { useApp } from '@/context/AppContext'
+import { useTutorial } from '@/context/TutorialContext'
 import { homeRouteFor } from '../ui/AppShell'
 
 const NAV = [
@@ -17,6 +19,8 @@ const NAV = [
 
 export function PublicNav() {
   const { state } = useApp()
+  const { start, hasTour } = useTutorial()
+  const pathname = usePathname()
   const home = state.loggedIn ? homeRouteFor(state.activeParticipantId) : '/'
 
   return (
@@ -34,6 +38,17 @@ export function PublicNav() {
           ))}
         </nav>
         <div className="flex items-center gap-2">
+          {hasTour(pathname) && (
+            <button
+              onClick={() => start(pathname)}
+              className="hidden sm:inline-flex items-center justify-center w-9 h-9 rounded-full border flex-shrink-0"
+              style={{ borderColor: 'var(--border-2)', color: 'var(--brand-700)' }}
+              aria-label="Take a tour of this page"
+              title="Take a tour of this page"
+            >
+              <Icon name="help" size={18} />
+            </button>
+          )}
           {state.loggedIn ? (
             <Link href={home} className="text-sm font-semibold px-4 py-1.5 rounded-lg text-white" style={{ backgroundColor: 'var(--brand-800)' }}>Go to dashboard</Link>
           ) : (

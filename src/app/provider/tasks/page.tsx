@@ -17,7 +17,7 @@ export default function ProviderTasksPage() {
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
-      <div className="mb-5">
+      <div className="mb-5" data-tour="page-intro">
         <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>Coordination actions</h2>
         <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Cross-agency actions across your caseload — who owes what, by when. These are coordination artifacts; the records they produce stay in each owning service’s system.</p>
       </div>

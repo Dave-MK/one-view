@@ -7,7 +7,7 @@ import { Card, Avatar, Badge } from '@/components/ui/primitives'
 export default function UsersPage() {
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-6">
-      <div className="mb-5">
+      <div className="mb-5" data-tour="page-intro">
         <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>Users</h2>
         <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Everyone with an account on the platform, across both worlds.</p>
       </div>

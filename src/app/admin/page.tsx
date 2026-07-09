@@ -42,12 +42,12 @@ export default function AdminOverview() {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-6">
-      <div className="mb-5">
+      <div className="mb-5" data-tour="admin-welcome">
         <h2 className="font-display text-2xl font-bold" style={{ color: 'var(--brand-900)' }}>Governance overview</h2>
         <p className="text-sm" style={{ color: 'var(--text-muted)' }}>Every access to a record is logged and monitored in line with data protection regulations.</p>
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-5">
+      <div className="grid grid-cols-2 lg:grid-cols-5 gap-4 mb-5" data-tour="admin-stats">
         <StatCard label="Users" value={participants.length} sub="Active participants" />
         <StatCard label="Organisations" value={organisations.length} sub="Connected" />
         <StatCard label="Data accesses" value={log.length} sub="Logged" />
@@ -56,12 +56,12 @@ export default function AdminOverview() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        <Card>
+        <Card tourId="admin-purpose">
           <SectionHeader title="Access by purpose" />
           <Donut data={purposeData} centerLabel="accesses" />
         </Card>
 
-        <Card className="lg:col-span-2" padded={false}>
+        <Card className="lg:col-span-2" padded={false} tourId="admin-activity">
           <div className="px-5 pt-5"><SectionHeader title="Recent access activity" action={<Link href="/admin/audit" className="text-xs font-medium" style={{ color: 'var(--brand-700)' }}>View audit log</Link>} /></div>
           <ul className="divide-y" style={{ borderColor: 'var(--border)' }}>
             {log.slice(0, 6).map((e) => {
@@ -82,7 +82,7 @@ export default function AdminOverview() {
           </ul>
         </Card>
 
-        <Card className="lg:col-span-3">
+        <Card className="lg:col-span-3" tourId="admin-orgs">
           <SectionHeader title="Access by organisation" />
           <BarList data={orgData} />
         </Card>

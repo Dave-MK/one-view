@@ -10,13 +10,17 @@ export function Card({
   children,
   className = '',
   padded = true,
+  tourId,
 }: {
   children: React.ReactNode
   className?: string
   padded?: boolean
+  /** Optional data-tour id, so this card can be a guided-tour target. */
+  tourId?: string
 }) {
   return (
     <div
+      data-tour={tourId}
       className={`rounded-xl border bg-white ${padded ? 'p-5' : ''} ${className}`}
       style={{ borderColor: 'var(--border)', boxShadow: '0 1px 2px rgba(15,23,42,0.04)' }}
     >

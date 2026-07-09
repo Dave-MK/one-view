@@ -93,7 +93,7 @@ export function MessageThreadView({ thread, showCase = false, defaultOpen = fals
   const lastFrom = last ? participantMap[last.fromParticipantId] : undefined
 
   return (
-    <Card padded={false}>
+    <Card padded={false} tourId="messages-thread">
       {/* Collapsible header */}
       <button
         onClick={() => setOpen((o) => !o)}

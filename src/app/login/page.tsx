@@ -42,7 +42,7 @@ function LoginInner() {
       <main className="flex-1 flex items-center justify-center px-4 py-12">
         <div className="w-full max-w-4xl grid grid-cols-1 md:grid-cols-[1fr_360px] gap-6 items-stretch">
           {/* Auth card */}
-          <div className="rounded-2xl border bg-white p-7" style={{ borderColor: 'var(--border)' }}>
+          <div className="rounded-2xl border bg-white p-7" style={{ borderColor: 'var(--border)' }} data-tour="login-form">
             <div className="flex items-center gap-2 mb-6">
               <LogoMark /> <span className="font-bold text-lg" style={{ color: 'var(--brand-800)' }}>{PRODUCT_NAME}</span>
             </div>
@@ -99,7 +99,7 @@ function LoginInner() {
           </div>
 
           {/* Safety panel */}
-          <div className="rounded-2xl border p-6" style={{ borderColor: 'var(--border)', backgroundColor: '#eef4ff' }}>
+          <div className="rounded-2xl border p-6" style={{ borderColor: 'var(--border)', backgroundColor: '#eef4ff' }} data-tour="login-safety">
             <div className="flex items-center gap-2 mb-4">
               <LogoMark size={18} /> <span className="font-semibold text-sm" style={{ color: 'var(--brand-800)' }}>Your information is safe</span>
             </div>
